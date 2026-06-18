@@ -54,14 +54,14 @@ body {
 */
 .stamp-grid {
   position: absolute;
-  top: 16%;
+  top: 13%;
   left: 50%;
   transform: translateX(-50%);
-  width: 94%;
+  width: 75%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 10%;
+  gap: 0.5% 10%;
 }
 
 .stamp-slot {
