@@ -1,0 +1,203 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-bg: #1c1c20;
+  --color-surface: #252529;
+  --color-accent: #9b3a3a;
+  --color-accent-glow: rgba(155, 58, 58, 0.3);
+  --color-text: #e4ddd4;
+  --color-text-muted: #7a7470;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Passport page ─────────────────────────────────────────── */
+
+.passport-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  background-image: url('/hdpassport/assets/passport-bg.png');
+  background-size: cover;
+  background-position: center top;
+  overflow: hidden;
+}
+
+/*
+  Stamp grid: adjust these custom properties to align with the
+  boxes in your passport-bg.png image.
+  --grid-top    : vertical offset from the top of the image
+  --grid-width  : total width of the 3-column grid
+  --grid-gap    : gap between slots (as % of grid width works best)
+*/
+.stamp-grid {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 3.5%;
+}
+
+.stamp-slot {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.stamp-slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stamp-slot.collected img {
+  opacity: 1;
+  animation: stamp-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: scale(0.2) rotate(-10deg); }
+  55%  { opacity: 1; }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Stagger each stamp slightly so they don't all land at once */
+.stamp-slot:nth-child(1) img { animation-delay: 0.00s; }
+.stamp-slot:nth-child(2) img { animation-delay: 0.07s; }
+.stamp-slot:nth-child(3) img { animation-delay: 0.14s; }
+.stamp-slot:nth-child(4) img { animation-delay: 0.21s; }
+.stamp-slot:nth-child(5) img { animation-delay: 0.28s; }
+.stamp-slot:nth-child(6) img { animation-delay: 0.35s; }
+
+/* ── Completion message ────────────────────────────────────── */
+
+.completion-message {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.completion-message.visible {
+  animation: completion-rise 0.9s ease 0.6s forwards;
+}
+
+@keyframes completion-rise {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.completion-message__text {
+  display: inline-block;
+  font-size: clamp(0.75rem, 2.2vw, 1rem);
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  padding: 0.55em 1.6em;
+  border: 1px solid var(--color-accent);
+  background: rgba(28, 28, 32, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ── Stamp capture page ────────────────────────────────────── */
+
+.stamp-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 2rem;
+  text-align: center;
+  background-color: var(--color-bg);
+}
+
+.stamp-screen__icon {
+  width: 68px;
+  height: 68px;
+  margin-bottom: 2rem;
+  border: 1.5px solid var(--color-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: icon-pulse 1.2s ease-in-out infinite;
+}
+
+.stamp-screen__icon svg {
+  width: 30px;
+  height: 30px;
+  stroke: var(--color-accent);
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes icon-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--color-accent-glow); }
+  50%       { box-shadow: 0 0 0 14px transparent; }
+}
+
+.stamp-screen__heading {
+  font-size: clamp(1.1rem, 4vw, 1.6rem);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.stamp-screen__sub {
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.stamp-screen__bar {
+  margin-top: 2.5rem;
+  width: 100px;
+  height: 1px;
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.stamp-screen__bar::after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--color-accent);
+  transform: translateX(-100%);
+  animation: bar-sweep 0.95s ease forwards;
+}
+
+@keyframes bar-sweep {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}

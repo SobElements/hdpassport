@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HD Passport</title>
+  <link rel="stylesheet" href="/hdpassport/css/style.css">
+</head>
+<body>
+  <div class="passport-page">
+
+    <div class="stamp-grid">
+      <div class="stamp-slot" id="slot-how-digital">
+        <img src="/hdpassport/assets/stamps/how-digital.png" alt="How Digital">
+      </div>
+      <div class="stamp-slot" id="slot-blc">
+        <img src="/hdpassport/assets/stamps/blc.png" alt="BLC">
+      </div>
+      <div class="stamp-slot" id="slot-digital-programmes">
+        <img src="/hdpassport/assets/stamps/digital-programmes.png" alt="Digital Programmes">
+      </div>
+      <div class="stamp-slot" id="slot-he">
+        <img src="/hdpassport/assets/stamps/he.png" alt="HE">
+      </div>
+      <div class="stamp-slot" id="slot-aqp">
+        <img src="/hdpassport/assets/stamps/aqp.png" alt="AQP">
+      </div>
+      <div class="stamp-slot" id="slot-construction">
+        <img src="/hdpassport/assets/stamps/construction.png" alt="Construction">
+      </div>
+    </div>
+
+    <div class="completion-message" id="completion-message">
+      <span class="completion-message__text">Passport Complete</span>
+    </div>
+
+  </div>
+
+  <script>
+    (function () {
+      var STAMPS = ['how-digital', 'blc', 'digital-programmes', 'he', 'aqp', 'construction'];
+      var STORAGE_KEY = 'howdigital_passport';
+
+      var data = {};
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) data = JSON.parse(raw);
+      } catch (e) {}
+
+      var count = 0;
+      STAMPS.forEach(function (id) {
+        if (data[id]) {
+          var slot = document.getElementById('slot-' + id);
+          if (slot) slot.classList.add('collected');
+          count++;
+        }
+      });
+
+      if (count === STAMPS.length) {
+        document.getElementById('completion-message').classList.add('visible');
+      }
+    })();
+  </script>
+</body>
+</html>

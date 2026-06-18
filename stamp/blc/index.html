@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stamping…</title>
+  <link rel="stylesheet" href="/hdpassport/css/style.css">
+</head>
+<body>
+  <div class="stamp-screen">
+    <div class="stamp-screen__icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M20 12V22H4V12"/>
+        <path d="M22 7H2v5h20V7z"/>
+        <path d="M12 22V7"/>
+        <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+        <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+      </svg>
+    </div>
+    <h1 class="stamp-screen__heading">Stamping your passport…</h1>
+    <p class="stamp-screen__sub">BLC</p>
+    <div class="stamp-screen__bar"></div>
+  </div>
+
+  <script>
+    (function () {
+      var STAMP_ID = 'blc';
+      var STORAGE_KEY = 'howdigital_passport';
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        var data = raw ? JSON.parse(raw) : {};
+        data[STAMP_ID] = true;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {}
+      setTimeout(function () {
+        window.location.replace('/hdpassport/passport/');
+      }, 1100);
+    })();
+  </script>
+</body>
+</html>
