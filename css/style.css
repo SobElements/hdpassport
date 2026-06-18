@@ -28,7 +28,7 @@ html, body {
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  background-image: url('/hdpassport/assets/passport-bg.png');
+  background-image: url('../assets/passport-bg.png');
   background-size: cover;
   background-position: center top;
   overflow: hidden;
@@ -43,14 +43,14 @@ html, body {
 */
 .stamp-grid {
   position: absolute;
-  top: 38%;
+  top: 16%;
   left: 50%;
   transform: translateX(-50%);
-  width: 80%;
+  width: 94%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 3.5%;
+  gap: 10%;
 }
 
 .stamp-slot {
@@ -61,8 +61,9 @@ html, body {
 .stamp-slot img {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  width: 75%;
+  height: 75%;
+  margin: auto;
   object-fit: contain;
   opacity: 0;
   pointer-events: none;
@@ -77,6 +78,12 @@ html, body {
   0%   { opacity: 0; transform: scale(0.2) rotate(-10deg); }
   55%  { opacity: 1; }
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Nudge middle column left to match background card positions — adjust % as needed */
+.stamp-slot:nth-child(2),
+.stamp-slot:nth-child(5) {
+  transform: translateX(-7%);
 }
 
 /* Stagger each stamp slightly so they don't all land at once */

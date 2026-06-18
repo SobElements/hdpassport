@@ -4,29 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HD Passport</title>
-  <link rel="stylesheet" href="/hdpassport/css/style.css">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
   <div class="passport-page">
 
     <div class="stamp-grid">
       <div class="stamp-slot" id="slot-how-digital">
-        <img src="/hdpassport/assets/stamps/how-digital.png" alt="How Digital">
+        <img src="../assets/stamps/how-digital.png" alt="How Digital">
       </div>
       <div class="stamp-slot" id="slot-blc">
-        <img src="/hdpassport/assets/stamps/blc.png" alt="BLC">
+        <img src="../assets/stamps/blc.png" alt="BLC">
       </div>
       <div class="stamp-slot" id="slot-digital-programmes">
-        <img src="/hdpassport/assets/stamps/digital-programmes.png" alt="Digital Programmes">
+        <img src="../assets/stamps/digital-programmes.png" alt="Digital Programmes">
       </div>
       <div class="stamp-slot" id="slot-he">
-        <img src="/hdpassport/assets/stamps/he.png" alt="HE">
+        <img src="../assets/stamps/he.png" alt="HE">
       </div>
       <div class="stamp-slot" id="slot-aqp">
-        <img src="/hdpassport/assets/stamps/aqp.png" alt="AQP">
+        <img src="../assets/stamps/aqp.png" alt="AQP">
       </div>
       <div class="stamp-slot" id="slot-construction">
-        <img src="/hdpassport/assets/stamps/construction.png" alt="Construction">
+        <img src="../assets/stamps/construction.png" alt="Construction">
       </div>
     </div>
 
@@ -35,6 +35,22 @@
     </div>
 
   </div>
+
+  <!-- DEV ONLY: remove before going live -->
+  <div id="dev-panel" style="position:fixed;bottom:1rem;right:1rem;z-index:999;background:rgba(0,0,0,0.85);border:1px solid #9b3a3a;padding:0.75rem;display:flex;flex-direction:column;gap:0.4rem;font-family:monospace;font-size:0.75rem;">
+    <span style="color:#9b3a3a;letter-spacing:0.1em;margin-bottom:0.2rem;">DEV — add stamp</span>
+    <button onclick="devStamp('how-digital')">how-digital</button>
+    <button onclick="devStamp('blc')">blc</button>
+    <button onclick="devStamp('digital-programmes')">digital-programmes</button>
+    <button onclick="devStamp('he')">he</button>
+    <button onclick="devStamp('aqp')">aqp</button>
+    <button onclick="devStamp('construction')">construction</button>
+    <button onclick="devClear()" style="margin-top:0.3rem;border-color:#555;color:#aaa;">clear all</button>
+  </div>
+  <style>
+    #dev-panel button { background: #1c1c20; color: #e4ddd4; border: 1px solid #444; padding: 0.3rem 0.6rem; cursor: pointer; text-align: left; }
+    #dev-panel button:hover { border-color: #9b3a3a; color: #fff; }
+  </style>
 
   <script>
     (function () {
@@ -60,6 +76,22 @@
         document.getElementById('completion-message').classList.add('visible');
       }
     })();
+
+    function devStamp(id) {
+      var STORAGE_KEY = 'howdigital_passport';
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        var data = raw ? JSON.parse(raw) : {};
+        data[id] = true;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {}
+      location.reload();
+    }
+
+    function devClear() {
+      localStorage.removeItem('howdigital_passport');
+      location.reload();
+    }
   </script>
 </body>
 </html>
