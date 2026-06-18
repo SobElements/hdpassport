@@ -26,12 +26,13 @@ html, body {
 .passport-page {
   position: relative;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  background-image: url('../assets/passport-bg.png');
-  background-size: cover;
-  background-position: center top;
-  overflow: hidden;
+  background-color: var(--color-bg);
+}
+
+.passport-bg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /*
