@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HD Passport — QR Codes</title>
+  <script src="../js/qrcode.min.js"></script>
+  <style>
+    :root { --ink: #1c1c20; --muted: #666; --accent: #9b3a3a; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--ink);
+      margin: 0;
+      padding: 2rem;
+      background: #f5f3ee;
+    }
+    header { max-width: 60rem; margin: 0 auto 1.5rem; }
+    h1 { margin: 0 0 0.25rem; font-size: 1.5rem; }
+    .lead { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    .print-btn {
+      margin-top: 1rem; padding: 0.5rem 1rem; border: 1px solid var(--accent);
+      background: var(--accent); color: #fff; border-radius: 4px; cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .grid {
+      max-width: 60rem; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .card {
+      background: #fff; border: 1px solid #ddd; border-radius: 8px;
+      padding: 1.25rem; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+    }
+    .card h2 { margin: 0; font-size: 1rem; }
+    .card .qr { width: 200px; height: 200px; }
+    .card .qr img, .card .qr canvas { width: 100% !important; height: 100% !important; }
+    .card .url { font-size: 0.7rem; color: var(--muted); word-break: break-all; }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .print-btn, .lead { display: none; }
+      .grid { gap: 1rem; }
+      .card { border: 1px solid #ccc; break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>HD Passport — Stamp QR Codes</h1>
+    <p class="lead">Single source of truth for printing. Each QR code links to the page that stamps the passport for that stand. Print this page, or right-click any code to save the image.</p>
+    <button class="print-btn" onclick="window.print()">Print</button>
+  </header>
+
+  <div class="grid" id="grid"></div>
+
+  <script>
+    var BASE = 'https://sobelements.github.io/hdpassport/';
+
+    var STAMPS = [
+      { id: 'how-digital',        label: 'How Digital' },
+      { id: 'blc',                label: 'BLC' },
+      { id: 'digital-programmes', label: 'Digital Programmes' },
+      { id: 'he',                 label: 'HE' },
+      { id: 'aqp',                label: 'AQP' },
+      { id: 'construction',       label: 'Construction' }
+    ];
+
+    var grid = document.getElementById('grid');
+
+    STAMPS.forEach(function (stamp) {
+      var url = BASE + 'stamp/' + stamp.id + '/';
+
+      var card = document.createElement('div');
+      card.className = 'card';
+
+      var h2 = document.createElement('h2');
+      h2.textContent = stamp.label;
+
+      var qr = document.createElement('div');
+      qr.className = 'qr';
+
+      var urlEl = document.createElement('div');
+      urlEl.className = 'url';
+      urlEl.textContent = url;
+
+      card.appendChild(h2);
+      card.appendChild(qr);
+      card.appendChild(urlEl);
+      grid.appendChild(card);
+
+      new QRCode(qr, {
+        text: url,
+        width: 200,
+        height: 200,
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    });
+  </script>
+</body>
+</html>
