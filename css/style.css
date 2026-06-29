@@ -46,34 +46,39 @@ body {
 }
 
 /*
-  Stamp grid: adjust these custom properties to align with the
-  boxes in your passport-bg.png image.
-  --grid-top    : vertical offset from the top of the image
-  --grid-width  : total width of the 3-column grid
-  --grid-gap    : gap between slots (as % of grid width works best)
+  Each slot is positioned absolutely over its box in passport-bg.png.
+  The values below were measured directly from the 1920x1080 background:
+    column centres : 22.76%  48.83%  77.24%   (note: NOT evenly spaced)
+    row centres    : 34.35%  76.16%
+    box size       : ~16.8% wide  x  ~29.8% tall  of the image
+  To re-align after editing the artwork, re-measure and update these.
 */
 .stamp-grid {
   position: absolute;
-  top: 13%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 75%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 0.5% 10%;
+  inset: 0;
 }
 
 .stamp-slot {
-  position: relative;
-  aspect-ratio: 1;
+  position: absolute;
+  width: 16.8%;
+  height: 29.8%;
+  /* centre on the measured point */
+  transform: translate(-50%, -50%);
 }
+
+/* Column centres (x) */
+.stamp-slot:nth-child(3n + 1) { left: 22.76%; }
+.stamp-slot:nth-child(3n + 2) { left: 48.83%; }
+.stamp-slot:nth-child(3n + 3) { left: 77.24%; }
+/* Row centres (y) */
+.stamp-slot:nth-child(-n + 3) { top: 34.35%; }   /* top row    */
+.stamp-slot:nth-child(n + 4)  { top: 76.16%; }   /* bottom row */
 
 .stamp-slot img {
   position: absolute;
   inset: 0;
-  width: 75%;
-  height: 75%;
+  width: 90%;
+  height: 90%;
   margin: auto;
   object-fit: contain;
   opacity: 0;
@@ -91,12 +96,6 @@ body {
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-/* Nudge middle column left to match background card positions — adjust % as needed */
-.stamp-slot:nth-child(2),
-.stamp-slot:nth-child(5) {
-  transform: translateX(-7%);
-}
-
 /* Stagger each stamp slightly so they don't all land at once */
 .stamp-slot:nth-child(1) img { animation-delay: 0.00s; }
 .stamp-slot:nth-child(2) img { animation-delay: 0.07s; }
@@ -107,14 +106,14 @@ body {
 
 /*
   Per-stamp size tweaks (light touch — base rule above is unchanged).
-  The base slot is square with object-fit: contain, so non-square logos
-  shrink on their long axis. We bump the binding dimension on the odd ones
+  The slot box is taller than wide and uses object-fit: contain, so non-square
+  logos shrink on their long axis. We bump the binding dimension on these two
   so every stamp reads at a roughly even visual size.
-    BLC = very wide wordmark  -> let it use more width
-    HE  = tall logo           -> let it use more height
+    BLC = very wide wordmark  -> let it use full width
+    HE  = tall logo           -> let it use full height
 */
-#slot-blc img { width: 100%; height: 100%; }
-#slot-he img  { width: 100%; height: 95%; }
+#slot-blc img { width: 100%; }
+#slot-he img  { height: 100%; }
 
 /* ── Completion celebration ────────────────────────────────── */
 
