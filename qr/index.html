@@ -36,9 +36,15 @@
     .card .qr { width: 200px; height: 200px; }
     .card .qr img, .card .qr canvas { width: 100% !important; height: 100% !important; }
     .card .url { font-size: 0.7rem; color: var(--muted); word-break: break-all; }
+    .download-btn {
+      margin-top: 0.2rem; padding: 0.35rem 0.8rem; border: 1px solid var(--accent);
+      background: #fff; color: var(--accent); border-radius: 4px; cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .download-btn:hover { background: var(--accent); color: #fff; }
     @media print {
       body { background: #fff; padding: 0; }
-      .print-btn, .lead { display: none; }
+      .print-btn, .lead, .download-btn { display: none; }
       .grid { gap: 1rem; }
       .card { border: 1px solid #ccc; break-inside: avoid; }
     }
@@ -47,7 +53,7 @@
 <body>
   <header>
     <h1>HD Passport — Stamp QR Codes</h1>
-    <p class="lead">Single source of truth for printing. Each QR code links to the page that stamps the passport for that stand. Print this page, or right-click any code to save the image.</p>
+    <p class="lead">Single source of truth for the QR codes. Each one links to the page that stamps the passport for that stand. Print this page, or use the Download button under any code to save a high-resolution PNG for slides, screens or banners.</p>
     <button class="print-btn" onclick="window.print()">Print</button>
   </header>
 
@@ -83,16 +89,43 @@
       urlEl.className = 'url';
       urlEl.textContent = url;
 
+      var downloadBtn = document.createElement('button');
+      downloadBtn.className = 'download-btn';
+      downloadBtn.type = 'button';
+      downloadBtn.textContent = 'Download PNG';
+
       card.appendChild(h2);
       card.appendChild(qr);
       card.appendChild(urlEl);
+      card.appendChild(downloadBtn);
       grid.appendChild(card);
 
+      // Render at high resolution so saved codes stay crisp when scaled up on a
+      // slide or screen; the .qr box keeps the on-screen/print size at 200px.
       new QRCode(qr, {
         text: url,
-        width: 200,
-        height: 200,
+        width: 512,
+        height: 512,
         correctLevel: QRCode.CorrectLevel.M
+      });
+
+      downloadBtn.addEventListener('click', function () {
+        // The library renders to a <canvas> (with an <img> fallback).
+        var canvas = qr.querySelector('canvas');
+        var dataUrl;
+        if (canvas) {
+          dataUrl = canvas.toDataURL('image/png');
+        } else {
+          var img = qr.querySelector('img');
+          if (!img) return;
+          dataUrl = img.src;
+        }
+        var a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'qr-' + stamp.id + '.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       });
     });
   </script>
